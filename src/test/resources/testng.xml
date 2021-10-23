@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+
+<suite name="Lesson 17 tests">
+    <test name="Testing operations with numbers and arrays">
+        <classes>
+                <class name="lesson17TestNGDemoTests.CalculatorTest"/>
+                <class name="lesson17TestNGDemoTests.ReverseIntegerTest"/>
+                <class name="lesson17TestNGDemoTests.NumberToPowerOfAnotherTest"/>
+                <class name="lesson17TestNGDemoTests.ArrayAverageValueTest"/>
+        </classes>
+    </test>
+</suite>
