@@ -51,6 +51,20 @@ public class TestingURLNegativeAndPositive {
         Assert.assertEquals(driver.getCurrentUrl(), "http://the-internet.herokuapp.com/");
     }
 
+    // Outside the homework
+    @Test
+    public void checkURLForTwoTabs() {
+        driver.get("https://phptravels.com/demo/");
+        String phpTravels = driver.getWindowHandle();
+
+        driver.switchTo().newWindow(WindowType.TAB);
+        driver.get("http://the-internet.herokuapp.com/");
+        Assert.assertNotEquals(driver.getCurrentUrl(), "https://phptravels.com/demo/");
+
+        driver.switchTo().window(phpTravels);
+        Assert.assertNotEquals(driver.getCurrentUrl(), "http://the-internet.herokuapp.com/");
+    }
+
     @AfterTest
     public void teamDown() {
         driver.quit();
