@@ -9,17 +9,10 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class SeleniumDevTest {
-    WebDriver driver;
-
-    @BeforeTest
-    public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-    }
+public class SeleniumDevTest extends UIBaseTest {
 
     @Test
-    public void driverActionTest() {
+    public void driverActionsTest() {
         driver.get("https://www.google.com/");
         String googleTab = driver.getWindowHandle();
 
@@ -30,11 +23,5 @@ public class SeleniumDevTest {
 
         driver.switchTo().window(googleTab);
         Assert.assertEquals(driver.getTitle(), "Google");
-    }
-
-
-    @AfterTest
-    public void teamDown() {
-        driver.quit();
     }
 }
