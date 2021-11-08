@@ -37,7 +37,7 @@ public class RozetkaHW21Test extends UIBaseTest {
     private final String huaweiItemInFilterChips = "//a[contains(text(),\"Huawei\")]";
     private final String goodsTitle = "//span[@class='goods-tile__title']";
     //private final String nextPageOfGoodsButton = "a[class='pagination__link ng-star-inserted']";
-    private final String nextPageOfGoodsButton = "//ul[@class='pagination__list']/li";
+    private final String nextPageOfGoodsButton = "li.pagination__item";
 
     @Test
     public void samsungAppleHuawei() throws InterruptedException {
@@ -69,42 +69,26 @@ public class RozetkaHW21Test extends UIBaseTest {
 
     private boolean checkIfAllGoodsTitlesContainsExpectedGoodsOnAllPages(String expected1, String expected2, String expected3) throws InterruptedException {
         // Collection of all "next page" buttons
-        List<WebElement> nextPagesOfGoodsButtons = driver.findElements(By.xpath(nextPageOfGoodsButton));
+        List<WebElement> nextPagesOfGoodsButtons = driver.findElements(By.cssSelector(nextPageOfGoodsButton));
         boolean result = false;
 
         for (WebElement nextPageButton : nextPagesOfGoodsButtons) {
+            nextPageButton.click();
             Thread.sleep(3000);
-            wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(By.xpath(nextPageOfGoodsButton + "[1]"))));
-            int pageIntNum = Integer.parseInt(nextPageButton.getText());
-
-            // Collection of all goods on page
+            //wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("li.catalog-grid__cell:first-of-type")));
+            //wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("a[class*='pagination__link_state_active']")));
 
             List<WebElement> goodsTitles = driver.findElements(By.xpath(goodsTitle));
 
-            if (pageIntNum == 1) {
-                for (WebElement good : goodsTitles) {
-                    String goodTitle = good.getText().toLowerCase();
-                    if (goodTitle.contains(expected1.toLowerCase()) || goodTitle.contains(expected2.toLowerCase()) || goodTitle.contains(expected3.toLowerCase())) {
-                        result = true;
-                    } else {
-                        System.out.println(goodTitle + " is not contain any of titles");
-                        result = false;
-                        break;
-                    }
-                }
-            } else {
-                nextPageButton.click();
-                Thread.sleep(3000);
+            for (WebElement good : goodsTitles) {
+                String goodTitle = good.getText().toLowerCase();
 
-                for (WebElement good : goodsTitles) {
-                    String goodTitle = good.getText().toLowerCase();
-                    if (goodTitle.contains(expected1.toLowerCase()) || goodTitle.contains(expected2.toLowerCase()) || goodTitle.contains(expected3.toLowerCase())) {
-                        result = true;
-                    } else {
-                        System.out.println(goodTitle + " is not contain any of titles");
-                        result = false;
-                        break;
-                    }
+                if (goodTitle.contains(expected1.toLowerCase()) || goodTitle.contains(expected2.toLowerCase()) || goodTitle.contains(expected3.toLowerCase())) {
+                    result = true;
+                } else {
+                    result = false;
+                    System.out.println(goodTitle + " is not contains any of titles");
+                    break;
                 }
             }
         }
@@ -112,7 +96,7 @@ public class RozetkaHW21Test extends UIBaseTest {
         return result;
     }
 
-    private boolean checkIfAllGoodsTitlesContainsExpectedGoods(String expected1, String expected2, String expected3) {
+    /*private boolean checkIfAllGoodsTitlesContainsExpectedGoods(String expected1, String expected2, String expected3) {
         List<WebElement> goodsTitles = driver.findElements(By.xpath(goodsTitle));
         boolean result = false;
 
@@ -129,5 +113,5 @@ public class RozetkaHW21Test extends UIBaseTest {
         }
 
         return result;
-    }
+    }*/
 }
