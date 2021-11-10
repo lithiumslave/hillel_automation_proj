@@ -1,5 +1,6 @@
-package UIDemoTests;
+package UIDemoTests.HomeWorks;
 
+import UIDemoTests.UIBaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
@@ -7,7 +8,7 @@ import org.testng.annotations.Test;
 
 import java.util.List;
 
-public class SaucedemoTest extends UIBaseTest{
+public class SaucedemoTest extends UIBaseTest {
     String url = "https://www.saucedemo.com/";
     String validLoginForStandartUser = "standard_user";
     String validPassword = "secret_sauce";
