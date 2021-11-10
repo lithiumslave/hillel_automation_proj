@@ -24,6 +24,7 @@ public class XPathTest extends UIBaseTest {
 
     }
 
+    @Test
     public void testXPath2() {
 
         driver.get("https://theautomationzone.blogspot.com/");

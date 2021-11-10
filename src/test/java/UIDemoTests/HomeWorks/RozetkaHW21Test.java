@@ -1,5 +1,6 @@
-package UIDemoTests;
+package UIDemoTests.HomeWorks;
 
+import UIDemoTests.UIBaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -73,7 +74,7 @@ public class RozetkaHW21Test extends UIBaseTest {
 
     @Test
     public void testBrandFilter() {
-        sendKeysToSearchField();
+        sendKeysToSearchField(searchText);
         clickOnMobilePhonesInFilter();
         clickOnAppleItemInFilter();
         clickOnHuaweiItemInFilter();
@@ -82,15 +83,15 @@ public class RozetkaHW21Test extends UIBaseTest {
 
     @Test
     public void testPriceFilter() {
-        sendKeysToSearchField();
+        sendKeysToSearchField(searchText);
         clickOnMobilePhonesInFilter();
-        setPriceFilterRange();
+        setPriceFilterRange(minPriceValueToSend, maxPriceValueToSend);
         Assert.assertTrue(checkIfAllGoodsAreInExpectedRange(minPriceValueToSend, maxPriceValueToSend));
     }
 
     @Test
     public void testRamFilter() {
-        sendKeysToSearchField();
+        sendKeysToSearchField(searchText);
         clickOnMobilePhonesInFilter();
         clickOn12GbRamInFilter();
         Assert.assertTrue(checkIfAllGoodsDescriptionContainsExpectedMemory(memoryExpected));
@@ -119,7 +120,7 @@ public class RozetkaHW21Test extends UIBaseTest {
         Assert.assertTrue(verificationOfPricesAreEqualsExpected(firstMonitorPrice, secondMonitorPrice));
     }
 
-    private void sendKeysToSearchField() {
+    private void sendKeysToSearchField(String searchText) {
         driver.findElement(By.xpath(searchField)).sendKeys(searchText, Keys.ENTER);
     }
 
@@ -234,17 +235,17 @@ public class RozetkaHW21Test extends UIBaseTest {
         return result;
     }
 
-    private void setPriceFilterRange() {
+    private void setPriceFilterRange(String minPriceValue, String maxPriceValue) {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(minPriceField)));
 
         WebElement minPriceFieldToSendKey = driver.findElement(By.xpath(minPriceField));
         WebElement maxPriceFieldToSendKey = driver.findElement(By.xpath(maxPriceField));
 
         minPriceFieldToSendKey.clear();
-        minPriceFieldToSendKey.sendKeys(minPriceValueToSend);
+        minPriceFieldToSendKey.sendKeys(minPriceValue);
 
         maxPriceFieldToSendKey.clear();
-        maxPriceFieldToSendKey.sendKeys(maxPriceValueToSend, Keys.ENTER);
+        maxPriceFieldToSendKey.sendKeys(maxPriceValue, Keys.ENTER);
     }
 
     private boolean checkIfAllGoodsAreInExpectedRange(String expectedMin, String expectedMax) {
