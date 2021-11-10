@@ -43,6 +43,8 @@ public class RozetkaHW21Test extends UIBaseTest {
     private final String maxPriceValueToSend = "15000";
     private final String memoryExpected = "12 ГБ";
     private final String expectedPriceForMonitor = "5000";
+    private final String counterFirst = "1";
+    private final String counterSecond = "2";
 
     private final String searchField = "//input[@name='search']";
     private final String mobilePhonesItemInFilter = "//span[contains(text(),\"Мобильные телефоны\")]";
@@ -63,8 +65,7 @@ public class RozetkaHW21Test extends UIBaseTest {
     private final String monitorsInTheListOfAllProducts = "img[alt='Мониторы']";
     private final String compareProductButtonOnTheProductPage = "button.compare-button";
     private final String compareButtonInHeaderOnTheProductPage = "button[aria-label='Списки сравнения']";
-    private final String icon1InHeaderOfProductPage = "//span[@_ngcontent-rz-client-c24][contains(text(),\"1\")]";
-    private final String icon2InHeaderOfProductPage = "//span[@_ngcontent-rz-client-c24][contains(text(),\"2\")]";
+    private final String compareAndTrashedIconsInHeaderOfProductPage = "span.counter";
     private final String productTitleOnProductPage = "h1.product__title";
     private final String productPriceOnProductPage = "p.product-prices__big";
     private final String firstItemInComparisonListModal = "a.comparison-modal__link";
@@ -105,13 +106,16 @@ public class RozetkaHW21Test extends UIBaseTest {
         findAndClickOnTheFirstMonitorWithPriceLessThanExpected(expectedPriceForMonitor);
         String firstMonitorTitle = getProductTitleInProductPage();
         String firstMonitorPrice = getProductPriceInProductPage();
-        clickOnCompareButtonAndVerifyIconAppears(icon1InHeaderOfProductPage);
+        clickOnCompareButton();
+        Assert.assertTrue(checkCorrectNumberInComparedProductsCounter(counterFirst));
         clickBack();
 
         findAndClickOnTheFirstMonitorWithPriceLessThanExpected(firstMonitorPrice);
         String secondMonitorTitle = getProductTitleInProductPage();
         String secondMonitorPrice = getProductPriceInProductPage();
-        clickOnCompareButtonAndVerifyIconAppears(icon2InHeaderOfProductPage);
+        clickOnCompareButton();
+        Assert.assertTrue(checkCorrectNumberInComparedProductsCounter(counterSecond));
+
         clickOnCompareButtonInHeader();
         clickOnFirstItemInComparisonList();
 
@@ -150,9 +154,17 @@ public class RozetkaHW21Test extends UIBaseTest {
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(monitorsInTheListOfAllProducts))).click();
     }
 
-    private void clickOnCompareButtonAndVerifyIconAppears(String iconInHeader) {
+    private void clickOnCompareButton() {
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(compareProductButtonOnTheProductPage))).click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(iconInHeader)));
+    }
+
+    private boolean checkCorrectNumberInComparedProductsCounter (String expectedCounter) {
+        wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(compareAndTrashedIconsInHeaderOfProductPage)));
+        List<WebElement> cartCounter = driver.findElements(By.cssSelector(compareAndTrashedIconsInHeaderOfProductPage));
+        
+        Assert.assertFalse(cartCounter.isEmpty());
+        
+        return cartCounter.get(0).getText().equals(expectedCounter);
     }
 
     private void clickOnCompareButtonInHeader() {
@@ -315,11 +327,6 @@ public class RozetkaHW21Test extends UIBaseTest {
         boolean result = false;
 
         for (WebElement title : productTitles) {
-            /*System.out.println(title.getText());
-            System.out.println(expectedFirstTitle);
-            System.out.println(expectedSecondTitle);
-            System.out.println("-------------------");*/
-
             if (title.getText().equals(expectedFirstTitle) || title.getText().equals(expectedSecondTitle)) {
                 result = true;
             }
@@ -335,10 +342,6 @@ public class RozetkaHW21Test extends UIBaseTest {
         for (WebElement price : productPrices) {
             String actualPrice = price.getText().replaceAll("[^0-9]", "");
             String actualPriceCutted = actualPrice.substring(4, 8);
-            /*System.out.println(actualPriceCutted);
-            System.out.println(expectedFirstPrice);
-            System.out.println(expectedSecondPrice);
-            System.out.println("-------------------");*/
 
             if (actualPriceCutted.equals(expectedFirstPrice) || actualPriceCutted.equals(expectedSecondPrice)) {
                 result = true;
