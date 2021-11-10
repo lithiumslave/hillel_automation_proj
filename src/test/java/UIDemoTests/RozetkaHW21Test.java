@@ -6,8 +6,7 @@ import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.List;
 
@@ -24,9 +23,14 @@ import java.util.List;
 */
 
 public class RozetkaHW21Test extends UIBaseTest {
-    @BeforeClass
+    @BeforeMethod
     public void openSite() {
         driver.get(url);
+    }
+
+    @AfterMethod
+    public void refreshSite() {
+        driver.navigate().refresh();
     }
 
     private final String url = "https://rozetka.com.ua/";
@@ -342,4 +346,5 @@ public class RozetkaHW21Test extends UIBaseTest {
 
         return result;
     }
+
 }
