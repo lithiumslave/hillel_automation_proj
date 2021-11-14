@@ -1,4 +1,4 @@
-package lesson17TestNGDemoTests;
+package TestNGDemoTests;
 
 import org.testng.annotations.AfterSuite;
 import org.testng.annotations.AfterTest;

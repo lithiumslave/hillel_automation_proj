@@ -11,7 +11,7 @@ import java.util.List;
 public class RozetkaTest extends UIBaseTest {
 
     @Test
-    public void testAddingProductToCart() throws InterruptedException {
+    public void testAddingProductToCart() {
         driver.get("https://rozetka.com.ua/");
         String searchText = "Xbox Series X 1Tb";
 
@@ -22,11 +22,10 @@ public class RozetkaTest extends UIBaseTest {
         WebElement searchButton = driver.findElement(By.cssSelector(".button.button_color_green"));
         searchButton.click();
 
-        Thread.sleep(3000);
+        //wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".content_type_catalog .goods-tile__heading")));
         WebElement productTitle = driver.findElement(By.cssSelector(".content_type_catalog .goods-tile__heading"));
         productTitle.click();
 
-        Thread.sleep(3000);
         WebElement selectedProductTitle = driver.findElement(By.cssSelector("h1.product__title"));
         System.out.println("Product text: " + selectedProductTitle.getText());
         Assert.assertTrue(selectedProductTitle.getText().toLowerCase().contains(searchText.toLowerCase()));
@@ -34,11 +33,9 @@ public class RozetkaTest extends UIBaseTest {
         WebElement buyButton = driver.findElement(By.cssSelector("span.buy-button__label"));
         buyButton.click();
 
-        Thread.sleep(3000);
         WebElement closeModalWindowButton = driver.findElement(By.cssSelector("button.modal__close"));
         closeModalWindowButton.click();
 
-        Thread.sleep(3000);
         List<WebElement> cartCounter = driver.findElements(By.cssSelector("span.counter"));
         Assert.assertFalse(cartCounter.isEmpty());
         Assert.assertEquals(cartCounter.get(0).getText(), "1");
