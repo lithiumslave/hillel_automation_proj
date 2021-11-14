@@ -1,4 +1,4 @@
-package lesson18HWTestingURL;
+package UIDemoTests.HomeWorks;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
@@ -9,7 +9,7 @@ import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class TestingURLNegativeAndPositive {
+public class UrlNegativeAndPositiveTest {
     WebDriver driver;
 
     @BeforeTest

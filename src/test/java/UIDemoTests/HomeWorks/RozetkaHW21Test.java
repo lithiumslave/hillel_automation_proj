@@ -1,27 +1,14 @@
 package UIDemoTests.HomeWorks;
 
 import UIDemoTests.UIBaseTest;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.Keys;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.*;
 
 import java.util.List;
-
-/*
-3. Find first monitor with price less then 5000UAH, click on image of this monitor, wait for page to load
-4. Add monitor to comparison. Verify icon (1) appears in header close to comparison image (scales). Remember price, name
-5. Click back button in browser
-6. Find first monitor which price is less then first monitor. Click on image of found monitor. Wait for page to load
-7. Add second monitor to comparison. Verify icon (2) appears in header close to comparison image (scales). Remember price, name
-8. Click on comparison image in header. Click on "Мониторы (2)". Wait for page to load
-9. Verify that in comparison you have just 2 monitors
-10. Verify that names are correct (equal to names which you stored in step4 and step7)
-11. Verify that prices are correct (equal to prices which you stored in step4 and step7)
-*/
 
 public class RozetkaHW21Test extends UIBaseTest {
     @BeforeMethod
@@ -75,10 +62,13 @@ public class RozetkaHW21Test extends UIBaseTest {
 
     @Test
     public void testBrandFilter() {
+        waitForJsToLoad();
         sendKeysToSearchField(searchText);
+        waitForJsToLoad();
         clickOnMobilePhonesInFilter();
         clickOnAppleItemInFilter();
         clickOnHuaweiItemInFilter();
+        waitForJsToLoad();
         Assert.assertTrue(checkIfAllGoodsTitlesContainsExpectedGoodsOnAllPages(appleTitle, samsungTitle, huaweiTitle));
     }
 
@@ -124,6 +114,20 @@ public class RozetkaHW21Test extends UIBaseTest {
         Assert.assertTrue(verificationOfPricesAreEqualsExpected(firstMonitorPrice, secondMonitorPrice));
     }
 
+    protected boolean waitForJsToLoad() {
+
+        final String loadJsScript = "return document.readyState";
+        final String loadJQueryScript = "return jQuery.active==0";
+
+        ExpectedCondition<Boolean> jsLoad = driver ->
+                js.executeScript(loadJsScript).toString().equals("complete");
+
+        /*ExpectedCondition<Boolean> jQueryLoad = driver ->
+                (Boolean) (js.executeScript(loadJQueryScript));*/
+
+        return wait.until(jsLoad)/* && wait.until(jQueryLoad)*/;
+    }
+
     private void sendKeysToSearchField(String searchText) {
         driver.findElement(By.xpath(searchField)).sendKeys(searchText, Keys.ENTER);
     }
@@ -158,12 +162,12 @@ public class RozetkaHW21Test extends UIBaseTest {
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(compareProductButtonOnTheProductPage))).click();
     }
 
-    private boolean checkCorrectNumberInComparedProductsCounter (String expectedCounter) {
+    private boolean checkCorrectNumberInComparedProductsCounter(String expectedCounter) {
         wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector(compareAndTrashedIconsInHeaderOfProductPage)));
         List<WebElement> cartCounter = driver.findElements(By.cssSelector(compareAndTrashedIconsInHeaderOfProductPage));
-        
+
         Assert.assertFalse(cartCounter.isEmpty());
-        
+
         return cartCounter.get(0).getText().equals(expectedCounter);
     }
 
@@ -198,6 +202,7 @@ public class RozetkaHW21Test extends UIBaseTest {
 
         for (WebElement nextPageButton : nextPagesOfGoodsButtons) {
             nextPageButton.click();
+            waitForJsToLoad();
 
             wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(productTitle)));
             List<WebElement> goodsTitles = driver.findElements(By.xpath(this.productTitle));

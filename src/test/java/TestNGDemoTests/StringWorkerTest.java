@@ -1,4 +1,4 @@
-package lesson17TestNGDemoTests;
+package TestNGDemoTests;
 
 import lesson17TestNG.StringWorker;
 import org.testng.Assert;
